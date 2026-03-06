@@ -3,8 +3,9 @@ import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 class HeartButton extends StatefulWidget {
+  final bool? isClicked;
   final void Function()? onTap;
-  const HeartButton({super.key, required this.onTap});
+  const HeartButton({super.key, required this.onTap, this.isClicked});
 
   @override
   State<HeartButton> createState() => _HeartButtonState();
@@ -13,6 +14,13 @@ class HeartButton extends StatefulWidget {
 class _HeartButtonState extends State<HeartButton> {
   String heartIcon = IconsAssets.icHeart;
   bool isClicked = false;
+  @override
+  void initState() {
+    isClicked = widget.isClicked ?? false;
+    heartIcon = !isClicked ? IconsAssets.icHeart : IconsAssets.icClickedHeart;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -37,7 +45,6 @@ class _HeartButtonState extends State<HeartButton> {
         child: Padding(
             padding: const EdgeInsets.all(6),
             child: ImageIcon(
-              
               AssetImage(heartIcon),
               color: ColorManager.primary,
             )),

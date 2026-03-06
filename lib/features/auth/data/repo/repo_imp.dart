@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:ecommerce_app/core/config/getIt_config.dart';
+import 'package:ecommerce_app/core/services/network_service.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/data_source.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/data_source_imp.dart';
 import 'package:ecommerce_app/features/auth/data/models/auth_response.dart';
@@ -21,6 +23,7 @@ class AuthRepoImp implements AuthRepo {
 
       if (response.statusCode == 200) {
         AuthResponse authResponse = AuthResponse.fromJson(response.data);
+        await getIt<NetworkService>().updateToken(authResponse.token!);
         return authResponse.toEntity();
       } else {
         throw "Invalid email or password";
@@ -41,6 +44,8 @@ class AuthRepoImp implements AuthRepo {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         AuthResponse authResponse = AuthResponse.fromJson(response.data);
+        await getIt<NetworkService>().updateToken(authResponse.token!);
+
         return authResponse.toEntity();
       } else {
         throw response.data["message"];

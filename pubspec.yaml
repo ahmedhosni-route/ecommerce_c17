@@ -24,6 +24,7 @@ dependencies:
   pretty_dio_logger:
   injectable:
   get_it:
+  shared_preferences:
 
 
 dev_dependencies:

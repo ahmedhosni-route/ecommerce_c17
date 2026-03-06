@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+
 class Loading {
   static bool _isLoading = false;
 
-  static void show(BuildContext context) {
+  static void show([BuildContext? context]) {
     if (_isLoading) return;
     _isLoading = true;
     showDialog(
       barrierDismissible: false,
-      context: context,
+      context: context??navigatorKey.currentContext!,
       builder: (context) {
         return const AlertDialog(
           backgroundColor: Colors.transparent,
@@ -28,9 +30,9 @@ class Loading {
     );
   }
 
-  static void hide(BuildContext context) {
+  static void hide([BuildContext? context]) {
     if (_isLoading) {
-      Navigator.pop(context);
+      Navigator.pop(context??navigatorKey.currentContext!);
       _isLoading = false;
     }
   }

@@ -4,19 +4,21 @@ import 'package:ecommerce_app/core/resources/font_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
+import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
- final bool? automaticallyImplyLeading;
+  final bool? automaticallyImplyLeading;
   const HomeScreenAppBar({super.key, this.automaticallyImplyLeading});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       surfaceTintColor: Colors.white,
-      automaticallyImplyLeading: automaticallyImplyLeading??false,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? false,
       title: SvgPicture.asset(
         SvgAssets.routeLogo,
         height: 25.h,
@@ -69,13 +71,21 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                 ),
-                IconButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, Routes.cartRoute),
-                    icon: ImageIcon(
-                      AssetImage(IconsAssets.icCart),
-                      color: ColorManager.primary,
-                    ))
+                Badge.count(
+                  count: context
+                          .watch<CartCubit>()
+                          .cart
+                          ?.numOfCartItems
+                          ?.toInt() ??
+                      0,
+                  child: IconButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, Routes.cartRoute),
+                      icon: ImageIcon(
+                        AssetImage(IconsAssets.icCart),
+                        color: ColorManager.primary,
+                      )),
+                )
               ],
             ),
           )),
